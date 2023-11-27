@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int compare(const void *a, const void *b) {
+    return (*(int *)a - *(int *)b);
+}
+
+
+int findMthMax(int arr[], int size, int m) {
+    
+    qsort(arr, size, sizeof(int), compare);
+
+    
+    return arr[size - m];
+}
+
+
+int findNthMin(int arr[], int size, int n) {
+    
+    qsort(arr, size, sizeof(int), compare);
+
+    
+    return arr[n - 1];
+}
+
+int main() {
+    
+    int size;
+
+    
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    
+    int arr[size];
+
+    
+    printf("Enter %d elements of the array:\n", size);
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    
+    int m, n;
+    printf("Enter the value of m: ");
+    scanf("%d", &m);
+    printf("Enter the value of n: ");
+    scanf("%d", &n);
+
+    
+    int mthMax = findMthMax(arr, size, m);
+    int nthMin = findNthMin(arr, size, n);
+
+    
+    int sum = mthMax + nthMin;
+    int difference = mthMax - nthMin;
+
+    
+    printf("Original Array: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    
+    printf("mth Maximum Element: %d\n", mthMax);
+    printf("nth Minimum Element: %d\n", nthMin);
+
+    
+    printf("Sum: %d\n", sum);
+    printf("Difference: %d\n", difference);
+
+    return 0;
+}
