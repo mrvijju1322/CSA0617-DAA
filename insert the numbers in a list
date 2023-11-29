@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+
+struct Node* insertAtBeginning(struct Node* head, int value) {
+    struct Node* newNode = createNode(value);
+    newNode->next = head;
+    return newNode;
+}
+
+
+struct Node* insertInMiddle(struct Node* head, int value, int position) {
+    struct Node* newNode = createNode(value);
+
+    if (position <= 0) {
+        printf("Invalid position for insertion\n");
+        free(newNode);
+        return head;
+    }
+
+    if (position == 1) {
+        newNode->next = head;
+        return newNode;
+    }
+
+    struct Node* current = head;
+    for (int i = 1; i < position - 1 && current != NULL; i++) {
+        current = current->next;
+    }
+
+    if (current == NULL) {
+        printf("Position not available for insertion\n");
+        free(newNode);
+        return head;
+    }
+
+    newNode->next = current->next;
+    current->next = newNode;
+    return head;
+}
+
+
+struct Node* insertAtLast(struct Node* head, int value) {
+    struct Node* newNode = createNode(value);
+
+    if (head == NULL) {
+        return newNode;
+    }
+
+    struct Node* current = head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    current->next = newNode;
+    return head;
+}
+
+
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    int value, position;
+
+    
+    printf("Enter the number to insert: ");
+    scanf("%d", &value);
+
+    
+    printf("Enter the position for insertion (1 for beginning, 0 for middle, -1 for last): ");
+    scanf("%d", &position);
+
+    switch (position) {
+        case 1:
+            head = insertAtBeginning(head, value);
+            break;
+        case 0:
+            
+            printf("Enter the position for middle insertion: ");
+            scanf("%d", &position);
+            head = insertInMiddle(head, value, position);
+            break;
+        case -1:
+            head = insertAtLast(head, value);
+            break;
+        default:
+            printf("Invalid choice for insertion position\n");
+            break;
+    }
+
+    
+    printf("List after insertion: ");
+    printList(head);
+
+    
+    while (head != NULL) {
+        struct Node* temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    return 0;
+}
